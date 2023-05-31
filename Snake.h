@@ -8,7 +8,7 @@
 
 class Snake{
 private:
-   // char16_t head{'X'}, borders{''}
+   char16_t head{'X'}, borders{'#'}, food{'O'}, body{'+'}; 
    size_t map_size_x, map_size_y;
    unsigned int location_head_x, location_head_y;
    unsigned int food_location_x, food_location_y;
