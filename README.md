@@ -1,0 +1,1 @@
+This will be my first attempt to make a snake in C++, this version will be CLI, before jumping to more UI friendly game.
