@@ -18,11 +18,13 @@ std::tuple<unsigned int, unsigned int> Snake::change_location_food(unsigned int 
          std::tie(this->food_location_x, this->food_location_y) = generate_random();      
          continue;
       }
-      for(const std::map)
-      if(){
+      //TODO make an enum to represent some restrict area of ints
+      //TODO make struct to represent some obj inside memory instead of map (waste of power)
+      // for(const std::map)
+      // if(){
 
-         continue;
-      }
+      //    continue;
+      // }
       nocrush_food = true;
    }
    //TODO random food != head
