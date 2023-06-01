@@ -1,4 +1,5 @@
-#include "snake.h"
+#include "Snake.hpp"
+#include "Body.hpp"
 
 int main(int argc, char** argv){
 

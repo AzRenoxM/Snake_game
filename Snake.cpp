@@ -1,4 +1,5 @@
-#include "Snake.h"
+#include "Snake.hpp"
+#include "Body.hpp"
 
 //! private
 
