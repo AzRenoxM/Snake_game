@@ -24,6 +24,6 @@ public:
    Snake(size_t map_size_x = 10, size_t map_size_y = 10);
    ~Snake() = default;
 
-   void control_snake(std::queue<std::map<unsigned int, unsigned int>>& memory_snake);
+   void control_snake(std::vector<int>& memory_snake);
    std::ofstream& display();
 };

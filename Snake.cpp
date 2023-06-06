@@ -22,13 +22,13 @@ std::tuple<unsigned int, unsigned int> Snake::change_location_food(unsigned int 
       //TODO make an enum to represent some restrict area of ints
       //TODO make struct to represent some obj inside memory instead of map (waste of power)
       // for(const std::map)
-      // if(){
-
-      //    continue;
-      // }
       nocrush_food = true;
    }
    //TODO random food != head
+   if(this->location_head_x == this->food_location_x && this->location_head_y == this->food_location_y){
+      this->change_location_food(this->location_head_x, this->location_head_y);
+   }
+
    //TODO random food != body snake
 }
 
@@ -42,8 +42,9 @@ Snake::Snake(size_t map_size_x, size_t map_size_y)
       //TODO 
 }
 
-void Snake::control_snake(std::queue<std::map<unsigned int, unsigned int>>& memory_snake){
+void Snake::control_snake(std::vector<int>& memory_snake){
    //TODO taking input from the player
+   return;
 }
 
 std::ofstream& Snake::display(){
