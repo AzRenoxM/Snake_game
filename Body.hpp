@@ -3,11 +3,10 @@
 #include<tuple>
 
 class Body{
-   private:
-      unsigned int corp_x;
-      unsigned int corp_y;
-      size_t points;
    public:
+      unsigned int corp_x; //! construct ini
+      unsigned int corp_y; //! construct ini
+      size_t points; //! construct ini
       Body(unsigned int corp_x = 1, unsigned int corp_y = 1, size_t points = 0);
       ~Body() = default;
 
