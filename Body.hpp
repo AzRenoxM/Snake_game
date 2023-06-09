@@ -1,6 +1,15 @@
 #pragma once
 
-#include<tuple>
+#include <ncurses.h>
+#include "Snake.hpp"
+#include <iostream>
+#include <ostream>
+#include <cstdlib>
+#include <vector>
+#include <queue>
+#include <ctime>
+#include <tuple>
+#include <map>
 
 class Body{
    public:
@@ -10,6 +19,6 @@ class Body{
       Body(unsigned int corp_x = 1, unsigned int corp_y = 1, size_t points = 0);
       ~Body() = default;
 
-      std::tuple<unsigned int, unsigned int, size_t> body_values();
+      std::tuple<unsigned int, unsigned int> body_values();
       void food_eaten();
 };

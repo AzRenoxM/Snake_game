@@ -2,7 +2,6 @@
 #include "Body.hpp"
 
 //! private
-
 std::tuple<unsigned int, unsigned int> generate_random(){
    int random_food_x = std::rand();
    int random_food_y = std::rand();
@@ -22,14 +21,14 @@ std::tuple<unsigned int, unsigned int> Snake::change_location_food(){
       }
       crush_food = false;
    }
-   return std::tie(this->food_location_x, this->food_location_y);
+   return std::make_tuple(this->food_location_x, this->food_location_y);
 }
  
 //! public
 
 Snake::Snake(size_t map_size_x, size_t map_size_y)
    : map_size_x{map_size_x}, map_size_y{map_size_y}, location_head_x{0},
-   location_head_y{0}, food_location_x{0}, food_location_y{0}, size_snake{this->memory_snake.size()}{
+   location_head_y{0}, food_location_x{0}, food_location_y{0}, size_snake{/*(this->memory_snake).size()*/0}{ //TODO something with the size
       //! location head
       if(this->map_size_x % 2 == 1){
          this->location_head_x = ((this->map_size_x - 1) / 2) + 1;
@@ -92,16 +91,16 @@ void Snake::display(){
    int x_row{1};
 
    for(size_t y_column{1}; y_column < map_size_y; y_column++){
-      std::cout << borders; 
+      std::cout << this->borders; 
 
       if(location_head_x == x_row && location_head_y == y_column){
          std::cout << this->head;
       } else if(this->is_inside(x_row, y_column)){
          std::cout << this->body;
       } else {
-         std::cout << blank;
+         std::cout << this->blank;
       }
-      std::cout << borders << '\n';
+      std::cout << this->borders << '\n';
       x_row++;
    }
    for(size_t inner_index{0}; inner_index < map_size_x; inner_index++){
@@ -109,10 +108,3 @@ void Snake::display(){
    }
 }
 
-void run(){
-   Snake game;
-   while(true){
-      game.display();
-      game.control_snake();
-   }
-}
