@@ -23,6 +23,7 @@ private:
    friend std::tuple<unsigned int, unsigned int> generate_random(Snake& source); //! generate 2 randoms numbers
    std::tuple<unsigned int, unsigned int> change_location_food(); //! changes the location of the food using the method friend before
    void go_opposite(); //! opposite direction
+   void eat_food(); //! position head == position food
 public:
    Snake(size_t map_size_x = 20, size_t map_size_y = 10); //! generates a map proprieties 
    ~Snake() = default;

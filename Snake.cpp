@@ -25,7 +25,6 @@ std::tuple<unsigned int, unsigned int> Snake::change_location_food(){
    return std::make_tuple(this->food_location_x, this->food_location_y);
 }
 
-//TODO 
 void Snake::go_opposite(){
    for(auto& body_chain : this->memory_snake){
       if(1 > body_chain.corp_x){
@@ -38,6 +37,14 @@ void Snake::go_opposite(){
          body_chain.corp_y = 1;
       }
    }
+}
+
+//TODO
+void Snake::eat_food(){
+   if(this->memory_snake[0].corp_x == this->food_location_x && this->memory_snake[0].corp_y == this->food_location_y){
+      this->size_snake++;
+      this->change_location_food();
+   } else return;
 }
  
 //! public
@@ -72,6 +79,8 @@ void Snake::control_snake(){
    noecho();
    keypad(stdscr, TRUE);
 
+   Body buffer(this->memory_snake[0].corp_y, this->memory_snake[0].corp_y, this->size_snake);
+
    int input{0};
    input = getch();
 
@@ -92,7 +101,19 @@ void Snake::control_snake(){
          break;
    }
    endwin();
-   if(input != 0) this->go_opposite();
+   if(input != 0) this->go_opposite(); //TODO corps when go to wall
+   if(input != 0) this->eat_food();
+   //! everytime trace - 1
+   if(input != 0){ //TODO degmentation problem
+      this->memory_snake.insert(this->memory_snake.begin() + 1, buffer);
+      for(auto it{this->memory_snake.begin()}; it != (this->memory_snake.begin() - 1); it++){
+         it->points--;
+         if(it->points == 0){
+            this->memory_snake.erase(this->memory_snake.end() - 1);
+         }
+      }
+   }
+   // if(input != 0) this->memory_snake
 }
 
 bool Snake::is_inside(unsigned int x_row, unsigned int y_column){
@@ -136,8 +157,17 @@ void Snake::display(){
    std::cout << '\n';
 
    //! developer sake
+   std::cout << '\n';
    std::cout << "this->memory_snake[0].corp_x: " << this->memory_snake[0].corp_x << std::endl;
    std::cout << "this->memory_snake[0].corp_y: " << this->memory_snake[0].corp_y << std::endl;
+   std::cout << "this->food_location_x: " << this->food_location_x << std::endl;
+   std::cout << "this->food_location_y: " << this->food_location_y << std::endl;
+   std::cout << "this->size_snake: " << this->size_snake << std::endl;
+
+   std::cout << '\n';
+   std::cout << "this->memory_snake[1].corp_x: " << this->memory_snake[1].corp_x << std::endl;
+   std::cout << "this->memory_snake[1].corp_y: " << this->memory_snake[1].corp_y << std::endl;
+   // std::cout << "this->food_location_y: " << this->food_location_y << std::endl;
 }
 
 void Snake::run(){
