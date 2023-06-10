@@ -24,12 +24,27 @@ std::tuple<unsigned int, unsigned int> Snake::change_location_food(){
    }
    return std::make_tuple(this->food_location_x, this->food_location_y);
 }
+
+//TODO 
+void Snake::go_opposite(){
+   for(auto& body_chain : this->memory_snake){
+      if(1 > body_chain.corp_x){
+         body_chain.corp_x = this->map_size_x - 2;
+      } else if(body_chain.corp_x >= this->map_size_x - 1){
+         body_chain.corp_x = 1;
+      } else if(1 > body_chain.corp_y){
+         body_chain.corp_y = this->map_size_y - 2;
+      } else if(body_chain.corp_y >= this->map_size_y - 1){
+         body_chain.corp_y = 1;
+      }
+   }
+}
  
 //! public
 
 Snake::Snake(size_t map_size_x, size_t map_size_y)
    : map_size_x{map_size_x}, map_size_y{map_size_y}, location_head_x{0},
-   location_head_y{0}, food_location_x{0}, food_location_y{0}, size_snake{/*(this->memory_snake).size()*/0}{ //TODO something with the size
+   location_head_y{0}, food_location_x{0}, food_location_y{0}, size_snake{1}{
       //! location head
       if(this->map_size_x % 2 == 1){
          this->location_head_x = ((this->map_size_x - 1) / 2) + 1;
@@ -42,6 +57,9 @@ Snake::Snake(size_t map_size_x, size_t map_size_y)
       } else {
          this->location_head_y = this->map_size_y / 2; 
       }
+      Body head_body(location_head_x, location_head_y, 1);
+      this->memory_snake.push_back(head_body);
+
       //! spawn food != location head
       this->change_location_food();
       this->display();
@@ -54,25 +72,27 @@ void Snake::control_snake(){
    noecho();
    keypad(stdscr, TRUE);
 
-   int input = getch();
+   int input{0};
+   input = getch();
 
    switch (input) {
       case 'w':
-         this->location_head_y--;
+         this->memory_snake[0].corp_y--;
          break;
       case 'a':
-         this->location_head_x--;
+         this->memory_snake[0].corp_x--;
          break;
       case 's':
-         this->location_head_y++;
+         this->memory_snake[0].corp_y++;
          break;
       case 'd':
-         this->location_head_x++;
+         this->memory_snake[0].corp_x++;
          break;
       default:
          break;
    }
    endwin();
+   if(input != 0) this->go_opposite();
 }
 
 bool Snake::is_inside(unsigned int x_row, unsigned int y_column){
@@ -97,7 +117,7 @@ void Snake::display(){
 
       for (size_t x_row{1}; x_row < (this->map_size_x - 1); x_row++){
       
-         if(this->location_head_x == x_row && this->location_head_y == y_column){
+         if(this->memory_snake[0].corp_x == x_row && this->memory_snake[0].corp_y == y_column){
             std::cout << this->head;
          } else if(this->is_inside(x_row, y_column)){
             std::cout << this->body;
@@ -116,7 +136,14 @@ void Snake::display(){
    std::cout << '\n';
 
    //! developer sake
-   std::cout << "food_location_x: " << this->food_location_x << std::endl;
-   std::cout << "food_location_y: " << this->food_location_y << std::endl;
+   std::cout << "this->memory_snake[0].corp_x: " << this->memory_snake[0].corp_x << std::endl;
+   std::cout << "this->memory_snake[0].corp_y: " << this->memory_snake[0].corp_y << std::endl;
 }
 
+void Snake::run(){
+   Snake game;
+   while(true){
+      game.display();
+      game.control_snake();
+   }
+}

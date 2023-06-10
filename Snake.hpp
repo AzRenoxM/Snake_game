@@ -22,13 +22,14 @@ private:
    bool is_inside(unsigned int x_row, unsigned int y_column); //! search inside memory_snake vector
    friend std::tuple<unsigned int, unsigned int> generate_random(Snake& source); //! generate 2 randoms numbers
    std::tuple<unsigned int, unsigned int> change_location_food(); //! changes the location of the food using the method friend before
+   void go_opposite(); //! opposite direction
 public:
-   Snake(size_t map_size_x = 10, size_t map_size_y = 10); //! generates a map proprieties 
+   Snake(size_t map_size_x = 20, size_t map_size_y = 10); //! generates a map proprieties 
    ~Snake() = default;
 
    size_t map_size_x, map_size_y; //! size of the map
 
    void control_snake(); //! takes input from the player 
    void display(); //! better to call this just run
-   friend void run();
+   void run();
 };
