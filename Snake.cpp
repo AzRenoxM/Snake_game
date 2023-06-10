@@ -2,20 +2,21 @@
 #include "Body.hpp"
 
 //! private
-std::tuple<unsigned int, unsigned int> generate_random(){
-   int random_food_x = std::rand();
-   int random_food_y = std::rand();
+std::tuple<unsigned int, unsigned int> generate_random(Snake* source){
+   std::srand(static_cast<unsigned int>(std::time(nullptr)));
+   int random_food_x = (std::rand() % (source->map_size_x - 2)) + 1;
+   int random_food_y = (std::rand() % (source->map_size_y - 2)) + 1;
    return std::make_tuple(random_food_x, random_food_y);
 }
 
 std::tuple<unsigned int, unsigned int> Snake::change_location_food(){
-   std::tie(this->food_location_x, this->food_location_y) = generate_random();
+   std::tie(this->food_location_x, this->food_location_y) = generate_random(this);
    bool crush_food{true};
 
    while(crush_food){
       for(size_t index{0}; index < this->memory_snake.size(); index++){
          if((this->memory_snake[index]).body_values() == std::tie(this->food_location_x, this->food_location_y)){
-            std::tie(this->food_location_x, this->food_location_y) = generate_random();      
+            std::tie(this->food_location_x, this->food_location_y) = generate_random(this);      
             continue;
          }
       }
@@ -43,6 +44,7 @@ Snake::Snake(size_t map_size_x, size_t map_size_y)
       }
       //! spawn food != location head
       this->change_location_food();
+      this->display();
 }
 
 void Snake::control_snake(){
@@ -65,7 +67,7 @@ void Snake::control_snake(){
          this->location_head_y++;
          break;
       case 'd':
-         this->location_head_x--;
+         this->location_head_x++;
          break;
       default:
          break;
@@ -84,27 +86,37 @@ bool Snake::is_inside(unsigned int x_row, unsigned int y_column){
 
 void Snake::display(){
    //! one frame after taking input
-   for(size_t inner_index{0}; inner_index < map_size_x; inner_index++){
+   system("clear");
+   for(size_t inner_index{0}; inner_index < this->map_size_x; inner_index++){
       std::cout << this->borders;
    }
    std::cout << '\n';
-   int x_row{1};
 
-   for(size_t y_column{1}; y_column < map_size_y; y_column++){
+   for(size_t y_column{1}; y_column < (this->map_size_y - 1); y_column++){
       std::cout << this->borders; 
 
-      if(location_head_x == x_row && location_head_y == y_column){
-         std::cout << this->head;
-      } else if(this->is_inside(x_row, y_column)){
-         std::cout << this->body;
-      } else {
-         std::cout << this->blank;
+      for (size_t x_row{1}; x_row < (this->map_size_x - 1); x_row++){
+      
+         if(this->location_head_x == x_row && this->location_head_y == y_column){
+            std::cout << this->head;
+         } else if(this->is_inside(x_row, y_column)){
+            std::cout << this->body;
+         } else if(this->food_location_x == x_row && this->food_location_y == y_column){
+            std::cout << this->food;
+         } else {
+            std::cout << this->blank;
+         }
       }
       std::cout << this->borders << '\n';
-      x_row++;
    }
-   for(size_t inner_index{0}; inner_index < map_size_x; inner_index++){
+   
+   for(size_t inner_index{0}; inner_index < this->map_size_x; inner_index++){
       std::cout << this->borders;
    }
+   std::cout << '\n';
+
+   //! developer sake
+   std::cout << "food_location_x: " << this->food_location_x << std::endl;
+   std::cout << "food_location_y: " << this->food_location_y << std::endl;
 }
 
