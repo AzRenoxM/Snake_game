@@ -16,9 +16,10 @@ class Body{
       unsigned int corp_x; //! construct ini
       unsigned int corp_y; //! construct ini
       size_t points; //! construct ini
-      Body(unsigned int corp_x = 1, unsigned int corp_y = 1, size_t points = 0);
+      Body(unsigned int corp_x = 1, unsigned int corp_y = 1, size_t points = 1);
       ~Body() = default;
 
       std::tuple<unsigned int, unsigned int> body_values();
       void food_eaten();
+      void set_values(unsigned int location_x, unsigned int location_y, size_t point);
 };
