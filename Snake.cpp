@@ -43,6 +43,9 @@ void Snake::go_opposite(){
 void Snake::eat_food(){
    if(this->memory_snake[0].corp_x == this->food_location_x && this->memory_snake[0].corp_y == this->food_location_y){
       this->size_snake++;
+      for(size_t index{1}; index < this->memory_snake.size(); index++){
+         this->memory_snake[index].points++;
+      }
       this->change_location_food();
    } else return;
 }
@@ -52,33 +55,33 @@ void Snake::body_upload(int input){
    Body _buffer;
    switch (input) {
       case 'w':
-         _buffer.set_values(this->memory_snake[0].corp_x, this->memory_snake[0].corp_y + 1, this->size_snake + 1);
+         _buffer.set_values(this->memory_snake[0].corp_x, this->memory_snake[0].corp_y + 1, this->size_snake);
          break;
       case 'a':
-         _buffer.set_values(this->memory_snake[0].corp_x + 1, this->memory_snake[0].corp_y, this->size_snake + 1);
+         _buffer.set_values(this->memory_snake[0].corp_x + 1, this->memory_snake[0].corp_y, this->size_snake);
          break;
       case 's':
-         _buffer.set_values(this->memory_snake[0].corp_x, this->memory_snake[0].corp_y - 1, this->size_snake + 1);
+         _buffer.set_values(this->memory_snake[0].corp_x, this->memory_snake[0].corp_y - 1, this->size_snake);
          break;
       case 'd':
-         _buffer.set_values(this->memory_snake[0].corp_x - 1, this->memory_snake[0].corp_y, this->size_snake + 1);
+         _buffer.set_values(this->memory_snake[0].corp_x - 1, this->memory_snake[0].corp_y, this->size_snake);
          break;
       default:
          break;
    }
-   this->memory_snake.push_back(_buffer);
    //! eliminates one point of each link
    for(size_t index{1}; index < this->memory_snake.size(); index++){
       this->memory_snake[index].points--;
-      if(this->memory_snake[index].points == 0) this->memory_snake.erase(this->memory_snake.begin() + index); 
+      if(this->memory_snake[index].points <= 0) this->memory_snake.erase(this->memory_snake.begin() + index); 
    }
+   this->memory_snake.push_back(_buffer);
 }
 
 //! public
 
 Snake::Snake(size_t map_size_x, size_t map_size_y)
    : map_size_x{map_size_x}, map_size_y{map_size_y}, location_head_x{0},
-   location_head_y{0}, food_location_x{0}, food_location_y{0}, size_snake{0}{
+   location_head_y{0}, food_location_x{0}, food_location_y{0}, size_snake{1}{
       //! location head
       if(this->map_size_x % 2 == 1){
          this->location_head_x = ((this->map_size_x - 1) / 2) + 1;
@@ -130,7 +133,7 @@ void Snake::control_snake(){
    endwin();
    if(input != 0) this->go_opposite(); //TODO corps when go to wall
    if(input != 0) this->eat_food();
-   if(input != 0) this->body_upload(input);
+   if(input != 0) this->body_upload(input); //TODO debug the food eating check the game
 }
 
 bool Snake::is_inside(unsigned int x_row, unsigned int y_column){
@@ -174,17 +177,14 @@ void Snake::display(){
    std::cout << '\n';
 
    //! developer sake
-   std::cout << '\n';
-   std::cout << "this->memory_snake[0].corp_x: " << this->memory_snake[0].corp_x << std::endl;
-   std::cout << "this->memory_snake[0].corp_y: " << this->memory_snake[0].corp_y << std::endl;
-   std::cout << "this->food_location_x: " << this->food_location_x << std::endl;
-   std::cout << "this->food_location_y: " << this->food_location_y << std::endl;
-   std::cout << "this->size_snake: " << this->size_snake << std::endl;
+   std::cout << "size snike: " <<this->size_snake << std::endl;
 
    std::cout << '\n';
    for(size_t something{0}; something < this->memory_snake.size(); something++){
       std::cout << "this->memory_snake[" << something << "].corp_x: " << this->memory_snake[something].corp_x << std::endl;
       std::cout << "this->memory_snake[" << something << "].corp_y: " << this->memory_snake[something].corp_y << std::endl;
+      std::cout << "this->memory_snake[" << something << "].points: " << this->memory_snake[something].points << std::endl;
+      std::cout << '\n';
    }
 }
 
