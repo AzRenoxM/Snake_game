@@ -193,13 +193,13 @@ void Snake::display(){
    //! developer sake
    std::cout << "Points: " << this->size_snake << std::endl;
 
-   std::cout << '\n';
-   for(size_t something{0}; something < this->memory_snake.size(); something++){
-      std::cout << "this->memory_snake[" << something << "].corp_x: " << this->memory_snake[something].corp_x << std::endl;
-      std::cout << "this->memory_snake[" << something << "].corp_y: " << this->memory_snake[something].corp_y << std::endl;
-      std::cout << "this->memory_snake[" << something << "].points: " << this->memory_snake[something].points << std::endl;
-      std::cout << '\n';
-   }
+   // std::cout << '\n';
+   // for(size_t something{0}; something < this->memory_snake.size(); something++){
+   //    std::cout << "this->memory_snake[" << something << "].corp_x: " << this->memory_snake[something].corp_x << std::endl;
+   //    std::cout << "this->memory_snake[" << something << "].corp_y: " << this->memory_snake[something].corp_y << std::endl;
+   //    std::cout << "this->memory_snake[" << something << "].points: " << this->memory_snake[something].points << std::endl;
+   //    std::cout << '\n';
+   // }
 }
 
 void Snake::run(){
