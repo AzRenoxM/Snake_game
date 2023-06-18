@@ -15,12 +15,12 @@ std::tuple<unsigned int, unsigned int> Snake::change_location_food(){
 
    while(crush_food){
       for(size_t index{0}; index < this->memory_snake.size(); index++){
-         if((this->memory_snake[index]).body_values() == std::tie(this->food_location_x, this->food_location_y)){
+         if(this->memory_snake[index].body_values() == std::tie(this->food_location_x, this->food_location_y)){
             std::tie(this->food_location_x, this->food_location_y) = generate_random(this);      
-            continue;
+            break;
          }
+         crush_food = false;
       }
-      crush_food = false;
    }
    return std::make_tuple(this->food_location_x, this->food_location_y);
 }
@@ -106,36 +106,40 @@ Snake::Snake(size_t map_size_x, size_t map_size_y)
       this->display();
 }
 
-bool Snake::control_snake(){
+void Snake::control_snake(){
    //! taking input from the player 
    initscr();
    cbreak();
    noecho();
    keypad(stdscr, TRUE);
-
+   bool enter_refresh{true};
    int input{0};
    input = getch();
 
    switch (input) {
       case 'w':
-         this->memory_snake[0].corp_y--;
+         if(this->memory_snake[0].corp_y - 1 != this->memory_snake[this->memory_snake.size() - 1].corp_y) this->memory_snake[0].corp_y--;
+         else enter_refresh = false;
          break;
       case 'a':
-         this->memory_snake[0].corp_x--;
+         if(this->memory_snake[0].corp_x - 1 != this->memory_snake[this->memory_snake.size() - 1].corp_x) this->memory_snake[0].corp_x--;
+         else enter_refresh = false;
          break;
       case 's':
-         this->memory_snake[0].corp_y++;
+         if(this->memory_snake[0].corp_y + 1 != this->memory_snake[this->memory_snake.size() - 1].corp_y) this->memory_snake[0].corp_y++;
+         else enter_refresh = false;
          break;
       case 'd':
-         this->memory_snake[0].corp_x++;
+         if(this->memory_snake[0].corp_x + 1 != this->memory_snake[this->memory_snake.size() - 1].corp_x) this->memory_snake[0].corp_x++;
+         else enter_refresh = false;
          break;
       default:
          break;
    }
    endwin();
    if(input != 0) this->go_opposite(); //TODO corps when go to wall
-   // if(input != 0) this->eat_food();
-   if(input != 0) this->body_upload(input); //TODO debug the food eating check the game
+   if(enter_refresh) this->body_upload(input); //TODO debug the food eating check the game
+   // return true;
 }
 
 bool Snake::is_inside(unsigned int x_row, unsigned int y_column){
@@ -145,6 +149,14 @@ bool Snake::is_inside(unsigned int x_row, unsigned int y_column){
       }
    }
    return false;
+}
+
+bool Snake::head_touch_snake(){
+   for (size_t index{1}; index < this->memory_snake.size(); index++){
+      if(this->memory_snake[index].body_values() == this->memory_snake[0].body_values())
+         return false;
+      }
+   return true;
 }
 
 void Snake::display(){
@@ -182,22 +194,25 @@ void Snake::display(){
    std::cout << "Points: " << this->size_snake << std::endl;
 
    std::cout << '\n';
-   // for(size_t something{0}; something < this->memory_snake.size(); something++){
-   //    std::cout << "this->memory_snake[" << something << "].corp_x: " << this->memory_snake[something].corp_x << std::endl;
-   //    std::cout << "this->memory_snake[" << something << "].corp_y: " << this->memory_snake[something].corp_y << std::endl;
-   //    std::cout << "this->memory_snake[" << something << "].points: " << this->memory_snake[something].points << std::endl;
-   //    std::cout << '\n';
-   // }
+   for(size_t something{0}; something < this->memory_snake.size(); something++){
+      std::cout << "this->memory_snake[" << something << "].corp_x: " << this->memory_snake[something].corp_x << std::endl;
+      std::cout << "this->memory_snake[" << something << "].corp_y: " << this->memory_snake[something].corp_y << std::endl;
+      std::cout << "this->memory_snake[" << something << "].points: " << this->memory_snake[something].points << std::endl;
+      std::cout << '\n';
+   }
 }
 
 void Snake::run(){
    Snake game;
-   while(true){
-      bool time_keypress{false};
+   bool game_con{true};
+   while(game_con){
+      // bool time_keypress{false};
       game.display();
-      while(time_keypress){
-         game.control_snake();
-
-      }
+      game.control_snake();
+      game_con = game.head_touch_snake();
+      // while(time_keypress){
+         // time_keypress = game.control_snake();
+         //TODO check main.cpp
+      // }
    }
 }

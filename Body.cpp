@@ -17,4 +17,3 @@ void Body::set_values(unsigned int location_x, unsigned int location_y, size_t p
    this->corp_y = location_y;
    this->points = point;
 }
-

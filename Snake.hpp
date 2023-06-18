@@ -26,12 +26,13 @@ private:
    void eat_food(); //! position head == position food
    void body_upload(int input);
 public:
-   Snake(size_t map_size_x = 5, size_t map_size_y = 5); //! generates a map proprieties 
+   Snake(size_t map_size_x = 20, size_t map_size_y = 10); //! generates a map proprieties 
    ~Snake() = default;
 
    size_t map_size_x, map_size_y; //! size of the map
 
-   bool control_snake(); //! takes input from the player 
+   bool head_touch_snake();
+   void control_snake(); //! takes input from the player 
    void display(); //! better to call this just run
    void run();
 };
