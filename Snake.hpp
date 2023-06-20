@@ -6,6 +6,8 @@
 #include <ostream>
 #include <cstdlib>
 #include <vector>
+#include <thread>
+#include <chrono>
 #include <queue>
 #include <ctime>
 #include <tuple>
@@ -17,7 +19,6 @@ private:
    unsigned int location_head_x, location_head_y; //! location of the head 
    unsigned int food_location_x, food_location_y; //! location of the food 
    unsigned int size_snake; //! points or how many7 object body has
-   std::vector<Body> memory_snake; //! has a memory where x and y are
 
    bool is_inside(unsigned int x_row, unsigned int y_column); //! search inside memory_snake vector
    friend std::tuple<unsigned int, unsigned int> generate_random(Snake& source); //! generate 2 randoms numbers
@@ -28,11 +29,18 @@ private:
 public:
    Snake(size_t map_size_x = 20, size_t map_size_y = 10); //! generates a map proprieties 
    ~Snake() = default;
+   std::vector<Body> memory_snake; //! has a memory where x and y are
+   bool game_con; //TODO give private
 
    size_t map_size_x, map_size_y; //! size of the map
 
-   bool head_touch_snake();
+   void head_touch_snake();
    void control_snake(); //! takes input from the player 
    void display(); //! better to call this just run
+   void speed_snake();
+
+   void thread_one();
+   void thread_two();
    void run();
+
 };

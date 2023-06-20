@@ -6,6 +6,8 @@
 #include <ostream>
 #include <cstdlib>
 #include <vector>
+#include <thread>
+#include <chrono>
 #include <queue>
 #include <ctime>
 #include <tuple>
@@ -16,6 +18,7 @@ class Body{
       unsigned int corp_x; //! construct ini
       unsigned int corp_y; //! construct ini
       size_t points; //! construct ini
+  
       Body(unsigned int corp_x = 1, unsigned int corp_y = 1, size_t points = 1);
       ~Body() = default;
 
